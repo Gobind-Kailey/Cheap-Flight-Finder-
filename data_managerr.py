@@ -33,7 +33,7 @@ class DataManager:
     # This gets all the users emails and returns them in a list.
     def get_user_data(self):
 
-        headers = {"Authorization": "Basic ZmxpZ2h0X2RlYWxzX3VzZXJuYW1lOnRoaXNfaXNfcGFzc3dvcmQ="}
+        headers = {"Authorization": os.environ["BEARER_TOKEN"]}
         # response = requests.get(url=os.environ['sheet_user_api'], headers= headers)
         response = requests.get(url=os.environ['sheet_api'], headers= headers)
 
