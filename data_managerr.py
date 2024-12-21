@@ -21,7 +21,7 @@ class DataManager:
     # This also provides the user data
     def get_destination_data(self):
         # Use the Sheety API to GET all the data in that sheet.
-        headers = {"Authorization": "Basic ZmxpZ2h0X2RlYWxzX3VzZXJuYW1lOnRoaXNfaXNfcGFzc3dvcmQ="}
+        headers = {"Authorization": os.environ["BEARER_TOKEN"]}
         response = requests.get(url=SHEETY_PRICES_ENDPOINT, headers=headers)
         data = response.json()
         # print(data)
