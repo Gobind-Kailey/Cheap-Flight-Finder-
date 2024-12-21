@@ -11,6 +11,7 @@ SHEETY_PRICES_ENDPOINT = os.environ['sheet_api']
 class DataManager:
 
     def __init__(self):
+        # keeping this protected by using os.environ[...]
         self._user = os.environ["SHEETY_USRERNAME"]
         self._password = os.environ["SHEETY_PASSWORD"]
         self._authorization = HTTPBasicAuth(self._user, self._password)
