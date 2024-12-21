@@ -18,31 +18,39 @@ class DataManager:
         self.email = []
 
     # This provides the destination data.
+    # This also provides the user data
     def get_destination_data(self):
         # Use the Sheety API to GET all the data in that sheet.
-        response = requests.get(url=SHEETY_PRICES_ENDPOINT)
+        headers = {"Authorization": "Basic ZmxpZ2h0X2RlYWxzX3VzZXJuYW1lOnRoaXNfaXNfcGFzc3dvcmQ="}
+        response = requests.get(url=SHEETY_PRICES_ENDPOINT, headers=headers)
         data = response.json()
         # print(data)
-        self.destination_data = data["prices"]
+        self.destination_data = data["formResponses"]
         # print(self.destination_data)
+        # Returns a list of dictionaries of all the city names, iatacodes, lowest prices and id's.
         return self.destination_data
 
     # This gets all the users emails and returns them in a list.
     def get_user_data(self):
 
-        response = requests.get(url=os.environ['sheet_user_api'])
-        listed_user_data = response.json()['users']
+        headers = {"Authorization": "Basic ZmxpZ2h0X2RlYWxzX3VzZXJuYW1lOnRoaXNfaXNfcGFzc3dvcmQ="}
+        # response = requests.get(url=os.environ['sheet_user_api'], headers= headers)
+        response = requests.get(url=os.environ['sheet_api'], headers= headers)
+
+        listed_user_data = response.json()['formResponses']
+        # print(listed_user_data)
         for user_data in listed_user_data:
+            # notice how we added all the words compressed
             self.email.append(user_data['whatIsYourEmail?'])
         return self.email
 
     # In the DataManager Class make a PUT request and use the row id from sheet_data
-    # to update the Google Sheet with the IATA codes. (Do this using code).
+    # to update the Google Sheet with the IATA codes.
     def update_destination_codes(self):
         for city in self.destination_data:
             new_data = {
                 "price": {
-                    "iataCode": city["iataCode"]
+                    "iataCode": city["whatIsTheIataCode?"]
                 }
             }
             response = requests.put(

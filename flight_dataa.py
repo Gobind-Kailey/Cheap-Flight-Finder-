@@ -19,12 +19,14 @@ class FlightData:
         # self.stops = stops_length
 
 # Notice that this is outside the class
+
 def find_cheapest_flight(data, stops_length):
     """
     Parses flight data received from the Amadeus API to identify the cheapest flight option among
     multiple entries.
     Args:
         data (dict): The JSON data containing flight information returned by the API.
+        stops_length: contains the number of stops in the flight.
     Returns:
         FlightData: An instance of the FlightData class representing the cheapest flight found,
         or a FlightData instance where all fields are 'NA' if no valid flight data is available.

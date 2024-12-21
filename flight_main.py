@@ -19,15 +19,14 @@ data_manager = DataManager()
 sheet_data = data_manager.get_destination_data()
 flight_search = FlightSearch()
 
-
 # Set your origin airport, I just used LON for an example.
-ORIGIN_CITY_IATA = "LON"
+ORIGIN_CITY_IATA = "YYZ"
 
 # ************************************* Update the Airport Codes in Google Sheet *************************************
 
 for row in sheet_data:
-    if row["iataCode"] == "":
-        row["iataCode"] = flight_search.get_destination_code(row["city"])
+    if row['whatIsTheIataCode?'] == "": # changed this from iataCode to 'WhatistheIATAcode?'
+        row['whatIsTheIataCode?'] = flight_search.get_destination_code(row["whereWouldYouLikeToTravelTo?"]) # changing this from city to Wherewouldyouliketotravelto?
         # slowing down requests to avoid rate limit or crashes
         time.sleep(2)
 # print(f"sheet_data:\n {sheet_data}")
@@ -47,11 +46,12 @@ user_email_list = data_manager.get_user_data()
 # ************************************* Main implementation *************************************
 
 for destination in sheet_data:
-    # print(f"Getting flights for {destination}")
+
+    print(f"Getting flights for {destination}")
     # Note that data is the super-big code returned, it holds all flight-offer info.
     data = flight_search.check_flights(
         ORIGIN_CITY_IATA,
-        destination["iataCode"],
+        destination["whatIsTheIataCode?"],
         from_time=tomorrow,
         to_time=six_month_from_today,
         is_direct='true'
@@ -82,7 +82,8 @@ for destination in sheet_data:
 # ************************************* Sending email to possible client's if valid *********************
 
     special_character = '\u0404'
-    if cheapest_flight.price != "N/A" and cheapest_flight.price < destination['price']: # destination['price']:
+    if cheapest_flight.price != "N/A" and cheapest_flight.price < destination['whatWouldBeYourMaxPriceForThisFlight?']: # destination['price']: changing this from lowestPrice
+        # print("Did it come here?")
         # notification_manager = Notification_manager(cheapest_flight)
         # notification_manager.send_message(stops_length)
         for emails in user_email_list:
